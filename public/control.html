@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>流媒体控制页 · 教学转发内核</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header>
+  <h1>流媒体控制页 · mediasoup 转发内核驱动</h1>
+  <nav>
+    <a href="/teacher.html">教师端</a>
+    <a href="/student.html">学生端</a>
+    <a href="/control.html">流媒体控制页</a>
+  </nav>
+</header>
+<main>
+  <div class="card">
+    <label>房间号</label><input id="roomId" value="lab-101" />
+    <button id="connectBtn">连接转发内核（controller 信令）</button>
+    <span style="margin-left:12px">内核连接：<span id="coreStatus" class="status off">未连接</span></span>
+    <span style="margin-left:12px">刷新：<span id="refreshAt" class="muted">-</span></span>
+    <p class="muted">
+      本页不收发媒体，只通过信令调用服务端 mediasoup 内核：切换订阅层、限制转发带宽、重启 ICE。
+      所有操作结果与错误都回显到“操作结果区”，数据来自内核 getStats 真实统计。
+    </p>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>房间节点与转发总览（每秒内核快照）</h2>
+    <div id="roomOverview"></div>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:16px">
+    <div class="card">
+      <h2>订阅层 / 带宽 / ICE 控制</h2>
+      <label>目标学生</label>
+      <select id="targetPeer"></select>
+      <div style="margin-top:8px">
+        <label>目标订阅（Consumer）</label>
+        <select id="targetConsumer"></select>
+      </div>
+      <div style="margin-top:10px">
+        <b style="font-size:13px">切换转发层（作用于 SFU 转发，不改页面尺寸）：</b><br/>
+        <button class="layer-btn" data-act="layer" data-layer="0">强制低层 S0</button>
+        <button class="layer-btn" data-act="layer" data-layer="1">强制中层 S1</button>
+        <button class="layer-btn" data-act="layer" data-layer="2">强制高层 S2</button>
+        <button class="layer-btn" data-act="layer-auto">恢复自动 BWE 选层</button>
+      </div>
+      <div style="margin-top:12px">
+        <b style="font-size:13px">限制该学生下行转发带宽：</b><br/>
+        <select id="presetBitrate">
+          <option value="100000">100 kbps（迫使 S0）</option>
+          <option value="300000" selected>300 kbps（S0~S1）</option>
+          <option value="700000">700 kbps（S1~S2）</option>
+          <option value="2000000">2 Mbps（允许 S2）</option>
+          <option value="10000000">解除限制（10 Mbps）</option>
+        </select>
+        <button data-act="bitrate">应用到接收 Transport</button>
+      </div>
+      <div style="margin-top:12px">
+        <b style="font-size:13px">ICE 故障处理：</b><br/>
+        <button class="danger" data-act="restart-ice">重启目标学生 ICE</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>操作结果区（内核回显 / 失败反馈）</h2>
+      <div id="resultLog" class="log"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>实时转发明细（实际层 / 码率 / 丢包反馈 / 带宽上限）</h2>
+    <div id="detailArea"></div>
+  </div>
+</main>
+<script src="/vendor/mediasoup-client.js"></script>
+<script type="module" src="/js/control.js"></script>
+</body>
+</html>

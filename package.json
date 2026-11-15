@@ -1,0 +1,26 @@
+{
+  "name": "lab-live-sfu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "远程实验授课直播间 - mediasoup SFU 真实转发（无服务端转码）",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "build:vendor": "esbuild vendor-entry.js --bundle --format=iife --global-name=mediasoupClient --outfile=public/vendor/mediasoup-client.js --platform=browser",
+    "test:auto": "node tests/run-tests.cjs",
+    "test:control": "node tests/control-page.cjs",
+    "test": "npm run test:auto && npm run test:control"
+  },
+  "dependencies": {
+    "mediasoup": "^3.32.0",
+    "mediasoup-client": "^3.26.0",
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "playwright": "^1.65.1"
+  }
+}

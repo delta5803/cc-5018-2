@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>远程实验授课直播 · mediasoup SFU</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header><h1>远程实验授课直播间（真实 WebRTC SFU，服务端不转码）</h1></header>
+<main>
+  <div class="grid grid-2">
+    <div class="card">
+      <h2>教师端</h2>
+      <p class="muted">发布摄像头、实验台双路视频（VP8 三层 Simulcast）与麦克风音频。</p>
+      <a href="/teacher.html"><button>打开教师端</button></a>
+    </div>
+    <div class="card">
+      <h2>学生端</h2>
+      <p class="muted">订阅 SFU 转发，按带宽自动/手动切换真实空间层，展示出画时间与真实统计。</p>
+      <a href="/student.html"><button>打开学生端</button></a>
+    </div>
+    <div class="card">
+      <h2>流媒体控制页</h2>
+      <p class="muted">由 mediasoup 转发内核驱动：切订阅层、限带宽、重启 ICE，结果区回显成败与真实转发。</p>
+      <a href="/control.html"><button>打开控制页</button></a>
+    </div>
+    <div class="card">
+      <h2>分层与降码率说明</h2>
+      <p class="muted">
+        VP8 Simulcast：低 150kbps / 中 500kbps / 高 1.5Mbps 三路独立空间层；
+        VP9 支持 SVC（L3T3）。带宽不足时 SFU 在 Transport BWE 约束下切换实际转发层，
+        是 RTP 层真实降码率，不是缩放 video 元素。
+      </p>
+    </div>
+  </div>
+</main>
+</body>
+</html>

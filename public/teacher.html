@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>教师端 · 远程实验授课直播</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header>
+  <h1>教师端 · 实验台直播（SFU 发布）</h1>
+  <nav>
+    <a href="/teacher.html">教师端</a>
+    <a href="/student.html">学生端</a>
+    <a href="/control.html">流媒体控制页</a>
+  </nav>
+</header>
+<main>
+  <div class="card">
+    <div class="grid grid-2">
+      <div>
+        <label>房间号</label><input id="roomId" value="lab-101" />
+        <label>教师 ID</label><input id="peerId" value="teacher-01" />
+        <label>媒体来源</label>
+        <select id="mediaSource">
+          <option value="test">测试媒体（动态画布 + 正弦音，免摄像头）</option>
+          <option value="device">真实设备（getUserMedia 摄像头/麦克风）</option>
+        </select>
+        <div style="margin-top:8px">
+          <button id="joinBtn">加入房间（仅信令）</button>
+          <button id="publishBtn" disabled>发布摄像头+实验台+麦克风</button>
+          <button id="shareBtn" class="secondary" disabled>追加屏幕/窗口共享</button>
+          <button id="leaveBtn" class="danger" disabled>下课退出（释放资源）</button>
+        </div>
+        <div class="pill-row">
+          <span>信令状态：<span id="sigStatus" class="status off">未连接</span></span>
+          <span>媒体状态：<span id="mediaStatus" class="status off">未发布</span></span>
+          <span>ICE：<span id="iceStatus" class="status off">-</span></span>
+        </div>
+        <p class="muted">
+          分层方式：VP8 三路空间 Simulcast（低 150kbps / 中 500kbps / 高 1.5Mbps），
+          另支持 VP9 SVC（L3T3）。服务端只转发不转码，带宽不足由 SFU 按 BWE 自动降层。
+        </p>
+      </div>
+      <div>
+        <h2>事件日志</h2>
+        <div id="log" class="log"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:16px">
+    <div class="card">
+      <h2>摄像头画面（Producer: camera）</h2>
+      <video id="camVideo" autoplay muted playsinline></video>
+      <div id="camStats" class="kv" style="margin-top:10px"></div>
+    </div>
+    <div class="card">
+      <h2>实验台画面（Producer: bench）</h2>
+      <video id="benchVideo" autoplay muted playsinline></video>
+      <div id="benchStats" class="kv" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>音频（Producer: mic）与真实发送统计（服务端 mediasoup getStats，每秒刷新）</h2>
+    <div class="audio-meter"><div id="audioMeter"></div></div>
+    <div id="serverStats" style="margin-top:10px"></div>
+  </div>
+</main>
+<script src="/vendor/mediasoup-client.js"></script>
+<script type="module" src="/js/teacher.js"></script>
+</body>
+</html>

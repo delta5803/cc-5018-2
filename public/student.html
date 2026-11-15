@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>学生端 · 远程实验授课直播</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header>
+  <h1>学生端 · 实验台直播（SFU 订阅）</h1>
+  <nav>
+    <a href="/teacher.html">教师端</a>
+    <a href="/student.html">学生端</a>
+    <a href="/control.html">流媒体控制页</a>
+  </nav>
+</header>
+<main>
+  <div class="card">
+    <div class="grid grid-2">
+      <div>
+        <label>房间号</label><input id="roomId" value="lab-101" />
+        <label>学生 ID</label><input id="peerId" value="student-01" />
+        <div style="margin-top:8px">
+          <button id="joinBtn">加入房间（仅信令）</button>
+          <button id="rejoinBtn" class="secondary" disabled>重新加入（资源回收验证）</button>
+          <button id="leaveBtn" class="danger" disabled>离开（释放订阅带宽）</button>
+          <button id="iceBtn" class="secondary" disabled>重启 ICE</button>
+        </div>
+        <div class="pill-row">
+          <span>信令：<span id="sigStatus" class="status off">未连接</span></span>
+          <span>媒体：<span id="mediaStatus" class="status off">无可解码画面</span></span>
+          <span>ICE：<span id="iceStatus" class="status off">-</span></span>
+        </div>
+        <p class="muted" id="joinHint">加入房间只代表信令在线；收到可解码视频帧后媒体状态才变为“已出画”。</p>
+      </div>
+      <div>
+        <h2>本端转发控制（由 mediasoup 内核驱动，失败回显到结果区）</h2>
+        <label>限制接收带宽（SFU → 本学生，kbps）</label>
+        <input id="bitrateInput" type="number" value="200" style="width:110px" />
+        <button id="capBtn">应用带宽上限</button>
+        <button id="uncapBtn" class="secondary">解除上限</button>
+        <p class="muted">上限在服务端 Transport BWE 生效，带宽不足时 Simulcast 自动降到低空间层，与视频元素尺寸无关。</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="consumerArea" class="grid grid-2" style="margin-top:16px"></div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>真实接收统计（浏览器 RTCPeerConnection.getStats + 服务端 getStats，每秒刷新）</h2>
+    <div id="statsArea"></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>事件 / 失败反馈</h2>
+    <div id="log" class="log"></div>
+  </div>
+</main>
+<script src="/vendor/mediasoup-client.js"></script>
+<script type="module" src="/js/student.js"></script>
+</body>
+</html>
