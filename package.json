@@ -9,6 +9,9 @@
     "build:vendor": "esbuild vendor-entry.js --bundle --format=iife --global-name=mediasoupClient --outfile=public/vendor/mediasoup-client.js --platform=browser",
     "test:auto": "node tests/run-tests.cjs",
     "test:control": "node tests/control-page.cjs",
+    "test:scheduling": "node tests/scheduling.cjs",
+    "test:trajectory": "node tests/trajectory.cjs",
+    "experiment:layers": "node scripts/layer-policy-experiment.mjs --evidence experiments/layer-policy/evidence.json --trajectory experiments/layer-policy/trajectory.json --out experiments/layer-policy/report.json",
     "test": "npm run test:auto && npm run test:control"
   },
   "dependencies": {

@@ -1,0 +1,809 @@
+{
+  "room": "trace-1794827698921",
+  "trajectory": {
+    "audioReserveBps": 48000,
+    "transportOverhead": 0.08,
+    "note": "预算口径=接收者整条接收 Transport（camera+bench+音频合计，并按 transportOverhead 加 8% 出向开销）。实测两路合计 S0≈321k、S1≈1.13M、S2≈3.40M；含 48k 音频与 8% 开销后 cap 约 399k / 1.22M / 3.55M。",
+    "slots": [
+      {
+        "t": 0,
+        "budgets": {
+          "stu-low": 400000,
+          "stu-high": 400000
+        }
+      },
+      {
+        "t": 1,
+        "budgets": {
+          "stu-low": 400000,
+          "stu-high": 1400000
+        }
+      },
+      {
+        "t": 2,
+        "budgets": {
+          "stu-low": 1350000,
+          "stu-high": 1500000
+        }
+      },
+      {
+        "t": 3,
+        "budgets": {
+          "stu-low": 3800000,
+          "stu-high": 3800000
+        }
+      }
+    ]
+  },
+  "note": "预算口径=接收者整条接收 Transport（camera+bench+音频合计）",
+  "observed": {
+    "per-receiver": [
+      {
+        "t": 0,
+        "budgets": {
+          "stu-low": 400000,
+          "stu-high": 400000
+        },
+        "targetLayer": {
+          "stu-low": 0,
+          "stu-high": 0
+        },
+        "errorCount": 0,
+        "errors": [],
+        "settleMs": 4009,
+        "settleReads": 3,
+        "settleReached": true,
+        "bweTrail": [
+          {
+            "atMs": 2,
+            "layers": {
+              "stu-low": 2,
+              "stu-high": 2
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 388646,
+                "avail": 6041219,
+                "sendKbps": 3111
+              },
+              "stu-high": {
+                "maxOut": 388646,
+                "avail": 6931849,
+                "sendKbps": 3111
+              }
+            }
+          },
+          {
+            "atMs": 2006,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 0
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 388646,
+                "avail": 388646,
+                "sendKbps": 1115
+              },
+              "stu-high": {
+                "maxOut": 388646,
+                "avail": 388646,
+                "sendKbps": 1090
+              }
+            }
+          },
+          {
+            "atMs": 4009,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 0
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 388646,
+                "avail": 388646,
+                "sendKbps": 338
+              },
+              "stu-high": {
+                "maxOut": 388646,
+                "avail": 388646,
+                "sendKbps": 338
+              }
+            }
+          }
+        ],
+        "appliedAt": 1794827720503,
+        "low": {
+          "layer": 0,
+          "kbps": 148
+        },
+        "high": {
+          "layer": 0,
+          "kbps": 148
+        },
+        "maxOutLow": 388646,
+        "maxOutHigh": 388646
+      },
+      {
+        "t": 1,
+        "budgets": {
+          "stu-low": 400000,
+          "stu-high": 1400000
+        },
+        "targetLayer": {
+          "stu-low": 0,
+          "stu-high": 1
+        },
+        "errorCount": 0,
+        "errors": [],
+        "settleMs": 4007,
+        "settleReads": 3,
+        "settleReached": true,
+        "bweTrail": [
+          {
+            "atMs": 2,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 0
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 365884,
+                "avail": 388646,
+                "sendKbps": 338
+              },
+              "stu-high": {
+                "maxOut": 1106643,
+                "avail": 388646,
+                "sendKbps": 338
+              }
+            }
+          },
+          {
+            "atMs": 2003,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 365884,
+                "avail": 365884,
+                "sendKbps": 353
+              },
+              "stu-high": {
+                "maxOut": 1106643,
+                "avail": 1106643,
+                "sendKbps": 493
+              }
+            }
+          },
+          {
+            "atMs": 4007,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 365884,
+                "avail": 365884,
+                "sendKbps": 343
+              },
+              "stu-high": {
+                "maxOut": 1106643,
+                "avail": 1106643,
+                "sendKbps": 701
+              }
+            }
+          }
+        ],
+        "appliedAt": 1794827724515,
+        "low": {
+          "layer": 0,
+          "kbps": 146
+        },
+        "high": {
+          "layer": 1,
+          "kbps": 504
+        },
+        "maxOutLow": 365884,
+        "maxOutHigh": 1106643
+      },
+      {
+        "t": 2,
+        "budgets": {
+          "stu-low": 1350000,
+          "stu-high": 1500000
+        },
+        "targetLayer": {
+          "stu-low": 1,
+          "stu-high": 1
+        },
+        "errorCount": 0,
+        "errors": [],
+        "settleMs": 4010,
+        "settleReads": 3,
+        "settleReached": true,
+        "bweTrail": [
+          {
+            "atMs": 6,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1167637,
+                "avail": 365884,
+                "sendKbps": 348
+              },
+              "stu-high": {
+                "maxOut": 1167637,
+                "avail": 1106643,
+                "sendKbps": 716
+              }
+            }
+          },
+          {
+            "atMs": 2009,
+            "layers": {
+              "stu-low": 1,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1167637,
+                "avail": 1167637,
+                "sendKbps": 484
+              },
+              "stu-high": {
+                "maxOut": 1167637,
+                "avail": 1167637,
+                "sendKbps": 722
+              }
+            }
+          },
+          {
+            "atMs": 4010,
+            "layers": {
+              "stu-low": 1,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1167637,
+                "avail": 1167637,
+                "sendKbps": 875
+              },
+              "stu-high": {
+                "maxOut": 1167637,
+                "avail": 1167637,
+                "sendKbps": 748
+              }
+            }
+          }
+        ],
+        "appliedAt": 1794827728530,
+        "low": {
+          "layer": 1,
+          "kbps": 539
+        },
+        "high": {
+          "layer": 1,
+          "kbps": 539
+        },
+        "maxOutLow": 1167637,
+        "maxOutHigh": 1167637
+      },
+      {
+        "t": 3,
+        "budgets": {
+          "stu-low": 3800000,
+          "stu-high": 3800000
+        },
+        "targetLayer": {
+          "stu-low": 2,
+          "stu-high": 2
+        },
+        "errorCount": 0,
+        "errors": [],
+        "settleMs": 4006,
+        "settleReads": 3,
+        "settleReached": true,
+        "bweTrail": [
+          {
+            "atMs": 2,
+            "layers": {
+              "stu-low": 1,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 3451646,
+                "avail": 1167637,
+                "sendKbps": 875
+              },
+              "stu-high": {
+                "maxOut": 3451646,
+                "avail": 1167637,
+                "sendKbps": 748
+              }
+            }
+          },
+          {
+            "atMs": 2004,
+            "layers": {
+              "stu-low": 2,
+              "stu-high": 2
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 3451646,
+                "avail": 3451646,
+                "sendKbps": 1834
+              },
+              "stu-high": {
+                "maxOut": 3451646,
+                "avail": 3451646,
+                "sendKbps": 1201
+              }
+            }
+          },
+          {
+            "atMs": 4006,
+            "layers": {
+              "stu-low": 2,
+              "stu-high": 2
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 3451646,
+                "avail": 3451646,
+                "sendKbps": 3220
+              },
+              "stu-high": {
+                "maxOut": 3451646,
+                "avail": 3451646,
+                "sendKbps": 2192
+              }
+            }
+          }
+        ],
+        "appliedAt": 1794827732546,
+        "low": {
+          "layer": 2,
+          "kbps": 1593
+        },
+        "high": {
+          "layer": 2,
+          "kbps": 1593
+        },
+        "maxOutLow": 3451646,
+        "maxOutHigh": 3451646
+      }
+    ],
+    "group-shared": [
+      {
+        "t": 0,
+        "budgets": {
+          "stu-low": 400000,
+          "stu-high": 400000
+        },
+        "targetLayer": {
+          "stu-low": 0,
+          "stu-high": 0
+        },
+        "errorCount": 0,
+        "errors": [],
+        "settleMs": 4007,
+        "settleReads": 3,
+        "settleReached": true,
+        "bweTrail": [
+          {
+            "atMs": 1,
+            "layers": {
+              "stu-low": 2,
+              "stu-high": 2
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 391476,
+                "avail": 3451646,
+                "sendKbps": 3220
+              },
+              "stu-high": {
+                "maxOut": 391476,
+                "avail": 3451646,
+                "sendKbps": 2192
+              }
+            }
+          },
+          {
+            "atMs": 2003,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 0
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 391476,
+                "avail": 391476,
+                "sendKbps": 704
+              },
+              "stu-high": {
+                "maxOut": 391476,
+                "avail": 391476,
+                "sendKbps": 627
+              }
+            }
+          },
+          {
+            "atMs": 4007,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 0
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 391476,
+                "avail": 391476,
+                "sendKbps": 341
+              },
+              "stu-high": {
+                "maxOut": 391476,
+                "avail": 391476,
+                "sendKbps": 341
+              }
+            }
+          }
+        ],
+        "appliedAt": 1794827736555,
+        "low": {
+          "layer": 0,
+          "kbps": 142
+        },
+        "high": {
+          "layer": 0,
+          "kbps": 142
+        },
+        "maxOutLow": 391476,
+        "maxOutHigh": 391476
+      },
+      {
+        "t": 1,
+        "budgets": {
+          "stu-low": 400000,
+          "stu-high": 1400000
+        },
+        "targetLayer": {
+          "stu-low": 0,
+          "stu-high": 0
+        },
+        "errorCount": 0,
+        "errors": [],
+        "settleMs": 2006,
+        "settleReads": 2,
+        "settleReached": true,
+        "bweTrail": [
+          {
+            "atMs": 2,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 0
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 370925,
+                "avail": 391476,
+                "sendKbps": 341
+              },
+              "stu-high": {
+                "maxOut": 370925,
+                "avail": 391476,
+                "sendKbps": 341
+              }
+            }
+          },
+          {
+            "atMs": 2006,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 0
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 370925,
+                "avail": 370925,
+                "sendKbps": 362
+              },
+              "stu-high": {
+                "maxOut": 370925,
+                "avail": 370925,
+                "sendKbps": 362
+              }
+            }
+          }
+        ],
+        "appliedAt": 1794827740564,
+        "low": {
+          "layer": 0,
+          "kbps": 156
+        },
+        "high": {
+          "layer": 0,
+          "kbps": 156
+        },
+        "maxOutLow": 370925,
+        "maxOutHigh": 370925
+      },
+      {
+        "t": 2,
+        "budgets": {
+          "stu-low": 1350000,
+          "stu-high": 1500000
+        },
+        "targetLayer": {
+          "stu-low": 1,
+          "stu-high": 1
+        },
+        "errorCount": 0,
+        "errors": [],
+        "settleMs": 12047,
+        "settleReads": 7,
+        "settleReached": true,
+        "bweTrail": [
+          {
+            "atMs": 2,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 0
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1199834,
+                "avail": 370925,
+                "sendKbps": 363
+              },
+              "stu-high": {
+                "maxOut": 1199834,
+                "avail": 370925,
+                "sendKbps": 362
+              }
+            }
+          },
+          {
+            "atMs": 2004,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 545
+              },
+              "stu-high": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 576
+              }
+            }
+          },
+          {
+            "atMs": 4008,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 643
+              },
+              "stu-high": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 879
+              }
+            }
+          },
+          {
+            "atMs": 6011,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 758
+              },
+              "stu-high": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 1166
+              }
+            }
+          },
+          {
+            "atMs": 8041,
+            "layers": {
+              "stu-low": 0,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 686
+              },
+              "stu-high": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 1029
+              }
+            }
+          },
+          {
+            "atMs": 10045,
+            "layers": {
+              "stu-low": 1,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 941
+              },
+              "stu-high": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 1049
+              }
+            }
+          },
+          {
+            "atMs": 12047,
+            "layers": {
+              "stu-low": 1,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 1151
+              },
+              "stu-high": {
+                "maxOut": 1199834,
+                "avail": 1199834,
+                "sendKbps": 1151
+              }
+            }
+          }
+        ],
+        "appliedAt": 1794827742572,
+        "low": {
+          "layer": 1,
+          "kbps": 556
+        },
+        "high": {
+          "layer": 1,
+          "kbps": 556
+        },
+        "maxOutLow": 1199834,
+        "maxOutHigh": 1199834
+      },
+      {
+        "t": 3,
+        "budgets": {
+          "stu-low": 3800000,
+          "stu-high": 3800000
+        },
+        "targetLayer": {
+          "stu-low": 2,
+          "stu-high": 2
+        },
+        "errorCount": 0,
+        "errors": [],
+        "settleMs": 6013,
+        "settleReads": 4,
+        "settleReached": true,
+        "bweTrail": [
+          {
+            "atMs": 2,
+            "layers": {
+              "stu-low": 1,
+              "stu-high": 1
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 3589215,
+                "avail": 1199834,
+                "sendKbps": 1151
+              },
+              "stu-high": {
+                "maxOut": 3589215,
+                "avail": 1199834,
+                "sendKbps": 1151
+              }
+            }
+          },
+          {
+            "atMs": 2009,
+            "layers": {
+              "stu-low": 1,
+              "stu-high": 2
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 3589215,
+                "avail": 3459920,
+                "sendKbps": 1171
+              },
+              "stu-high": {
+                "maxOut": 3589215,
+                "avail": 3463840,
+                "sendKbps": 1316
+              }
+            }
+          },
+          {
+            "atMs": 4011,
+            "layers": {
+              "stu-low": 2,
+              "stu-high": 2
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 3589215,
+                "avail": 3589215,
+                "sendKbps": 2557
+              },
+              "stu-high": {
+                "maxOut": 3589215,
+                "avail": 3589215,
+                "sendKbps": 2961
+              }
+            }
+          },
+          {
+            "atMs": 6013,
+            "layers": {
+              "stu-low": 2,
+              "stu-high": 2
+            },
+            "bwe": {
+              "stu-low": {
+                "maxOut": 3589215,
+                "avail": 3589215,
+                "sendKbps": 3309
+              },
+              "stu-high": {
+                "maxOut": 3589215,
+                "avail": 3589215,
+                "sendKbps": 3309
+              }
+            }
+          }
+        ],
+        "appliedAt": 1794827754622,
+        "low": {
+          "layer": 2,
+          "kbps": 1653
+        },
+        "high": {
+          "layer": 2,
+          "kbps": 1653
+        },
+        "maxOutLow": 3589215,
+        "maxOutHigh": 3589215
+      }
+    ]
+  }
+}

@@ -198,6 +198,71 @@ wss.on('connection', (ws) => {
           break;
         }
 
+        // 学生页每秒上报浏览器实测（可解码帧 = framesDecoded 增量），供控制页对照转发效果
+        case 'client-stats': {
+          const updated = ctx.peer.reportClientStats(msg);
+          reply(true, { updated });
+          break;
+        }
+
+        // 教学转发原型：把调度方案真正下发到 SFU 包转发入口
+        // （Consumer.setPreferredLayers + WebRtcTransport.setMaxOutgoingBitrate）
+        case 'control-apply-scheme': {
+          if (ctx.peer.role !== 'controller') throw new Error('仅控制页可下发调度方案');
+          const result = await ctx.room.applySchedulingScheme({
+            scheme: msg.scheme,
+            groupPeerIds: msg.groupPeerIds || [],
+            receiverBudgets: msg.receiverBudgets || {},
+            audioReserveBps: Number(msg.audioReserveBps) || undefined,
+            transportOverhead: Number.isFinite(Number(msg.transportOverhead))
+              ? Number(msg.transportOverhead)
+              : undefined,
+            label: msg.label || null,
+          });
+          reply(true, { scheduling: result });
+          break;
+        }
+
+        case 'control-clear-scheme': {
+          if (ctx.peer.role !== 'controller') throw new Error('仅控制页可清除调度方案');
+          const results = await ctx.room.clearSchedulingForPeer(msg.targetPeerId);
+          reply(true, { targetPeerId: msg.targetPeerId, results });
+          break;
+        }
+
+        // 实验复算：返回真实层成本样本 + BWE + 最近一次调度计划
+        case 'control-schedule-evidence': {
+          if (ctx.peer.role !== 'controller') throw new Error('仅控制页可读取调度证据');
+          const room = ctx.room;
+          const receivers = [];
+          for (const peer of room.peers.values()) {
+            if (peer.role !== 'student') continue;
+            const streams = await room.collectReceiverCosts(peer, msg.label || null);
+            const transports = [];
+            for (const t of peer.transports.values()) {
+              if (t.appData?.direction !== 'recv') continue;
+              const stats = await t.getStats();
+              const tuple = stats.find((s) => s.type === 'webrtc-transport') || {};
+              transports.push({
+                id: t.id,
+                availableOutgoingBitrate: tuple.availableOutgoingBitrate ?? null,
+                maxOutgoingBitrate: tuple.maxOutgoingBitrate ?? null,
+                sendBitrate: tuple.sendBitrate ?? null,
+              });
+            }
+            receivers.push({ peerId: peer.id, streams, transports });
+          }
+          reply(true, {
+            evidence: {
+              roomId: room.id,
+              at: Date.now(),
+              receivers,
+              scheduling: room.scheduling,
+            },
+          });
+          break;
+        }
+
         // 控制页：拉取整个房间的真实状态，或对任意目标节点执行操作
         case 'room-snapshot': {
           if (ctx.peer.role !== 'controller') throw new Error('仅控制页可调用 room-snapshot');

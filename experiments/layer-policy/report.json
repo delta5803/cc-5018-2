@@ -1,0 +1,1947 @@
+{
+  "generatedAt": "2026-11-16T11:14:43.946Z",
+  "evidenceRoom": "sched-1794827563435",
+  "evidenceAt": 1794827598911,
+  "trajectorySlotCount": 4,
+  "schemes": {
+    "per-receiver": {
+      "scheme": "per-receiver",
+      "audioReserveBps": 48000,
+      "transportOverhead": 0.08,
+      "slots": [
+        {
+          "t": 0,
+          "budgets": {
+            "stu-low": 400000,
+            "stu-high": 400000
+          },
+          "plan": {
+            "scheme": "per-receiver",
+            "at": 1794827683945,
+            "audioReserveBps": 48000,
+            "transportOverhead": 0.08,
+            "groupBudgetBps": null,
+            "receivers": [
+              {
+                "peerId": "stu-low",
+                "transportId": "b43dfaa5-bdcd-4409-8d56-a5b2f5308282",
+                "budgetBps": 400000,
+                "budgetSource": "trajectory",
+                "bweBps": 350000,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 163373,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1630506,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1630506
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 158371,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 399324,
+                "requestedSpatialLayer": 0,
+                "layerCostBps": 399324,
+                "layerVideoBps": 321744,
+                "costSource": "measured",
+                "score": 0.098,
+                "reason": "budget-fits"
+              },
+              {
+                "peerId": "stu-high",
+                "transportId": "0ed1e7ce-48a8-4cec-9151-59b152b3aecd",
+                "budgetBps": 400000,
+                "budgetSource": "trajectory",
+                "bweBps": 385761,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 163373,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1646896,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1646896
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 158371,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 399324,
+                "requestedSpatialLayer": 0,
+                "layerCostBps": 399324,
+                "layerVideoBps": 321744,
+                "costSource": "measured",
+                "score": 0.097,
+                "reason": "budget-fits"
+              }
+            ],
+            "warnings": [
+              {
+                "peerId": "stu-low",
+                "code": "bwe-below-budget",
+                "message": "当前 BWE 350k 低于轨迹预算 400k，计划层可能被 worker 压制到更低层"
+              },
+              {
+                "peerId": "stu-high",
+                "code": "bwe-below-budget",
+                "message": "当前 BWE 386k 低于轨迹预算 400k，计划层可能被 worker 压制到更低层"
+              }
+            ]
+          }
+        },
+        {
+          "t": 1,
+          "budgets": {
+            "stu-low": 400000,
+            "stu-high": 1400000
+          },
+          "plan": {
+            "scheme": "per-receiver",
+            "at": 1794827683945,
+            "audioReserveBps": 48000,
+            "transportOverhead": 0.08,
+            "groupBudgetBps": null,
+            "receivers": [
+              {
+                "peerId": "stu-low",
+                "transportId": "b43dfaa5-bdcd-4409-8d56-a5b2f5308282",
+                "budgetBps": 400000,
+                "budgetSource": "trajectory",
+                "bweBps": 350000,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 163373,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1630506,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1630506
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 158371,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 399324,
+                "requestedSpatialLayer": 0,
+                "layerCostBps": 399324,
+                "layerVideoBps": 321744,
+                "costSource": "measured",
+                "score": 0.098,
+                "reason": "budget-fits"
+              },
+              {
+                "peerId": "stu-high",
+                "transportId": "0ed1e7ce-48a8-4cec-9151-59b152b3aecd",
+                "budgetBps": 1400000,
+                "budgetSource": "trajectory",
+                "bweBps": 385761,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 547446,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1646896,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1646896
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 532560,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 1218247,
+                "requestedSpatialLayer": 1,
+                "layerCostBps": 1218247,
+                "layerVideoBps": 1080006,
+                "costSource": "measured",
+                "score": 0.327,
+                "reason": "budget-fits"
+              }
+            ],
+            "warnings": [
+              {
+                "peerId": "stu-low",
+                "code": "bwe-below-budget",
+                "message": "当前 BWE 350k 低于轨迹预算 400k，计划层可能被 worker 压制到更低层"
+              },
+              {
+                "peerId": "stu-high",
+                "code": "bwe-below-budget",
+                "message": "当前 BWE 386k 低于轨迹预算 1400k，计划层可能被 worker 压制到更低层"
+              }
+            ]
+          }
+        },
+        {
+          "t": 2,
+          "budgets": {
+            "stu-low": 1350000,
+            "stu-high": 1500000
+          },
+          "plan": {
+            "scheme": "per-receiver",
+            "at": 1794827683945,
+            "audioReserveBps": 48000,
+            "transportOverhead": 0.08,
+            "groupBudgetBps": null,
+            "receivers": [
+              {
+                "peerId": "stu-low",
+                "transportId": "b43dfaa5-bdcd-4409-8d56-a5b2f5308282",
+                "budgetBps": 1350000,
+                "budgetSource": "trajectory",
+                "bweBps": 350000,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 547446,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1630506,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1630506
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 532560,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 1218247,
+                "requestedSpatialLayer": 1,
+                "layerCostBps": 1218247,
+                "layerVideoBps": 1080006,
+                "costSource": "measured",
+                "score": 0.328,
+                "reason": "budget-fits"
+              },
+              {
+                "peerId": "stu-high",
+                "transportId": "0ed1e7ce-48a8-4cec-9151-59b152b3aecd",
+                "budgetBps": 1500000,
+                "budgetSource": "trajectory",
+                "bweBps": 385761,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 547446,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1646896,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1646896
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 532560,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 1218247,
+                "requestedSpatialLayer": 1,
+                "layerCostBps": 1218247,
+                "layerVideoBps": 1080006,
+                "costSource": "measured",
+                "score": 0.327,
+                "reason": "budget-fits"
+              }
+            ],
+            "warnings": [
+              {
+                "peerId": "stu-low",
+                "code": "bwe-below-budget",
+                "message": "当前 BWE 350k 低于轨迹预算 1350k，计划层可能被 worker 压制到更低层"
+              },
+              {
+                "peerId": "stu-high",
+                "code": "bwe-below-budget",
+                "message": "当前 BWE 386k 低于轨迹预算 1500k，计划层可能被 worker 压制到更低层"
+              }
+            ]
+          }
+        },
+        {
+          "t": 3,
+          "budgets": {
+            "stu-low": 3800000,
+            "stu-high": 3800000
+          },
+          "plan": {
+            "scheme": "per-receiver",
+            "at": 1794827683945,
+            "audioReserveBps": 48000,
+            "transportOverhead": 0.08,
+            "groupBudgetBps": null,
+            "receivers": [
+              {
+                "peerId": "stu-low",
+                "transportId": "b43dfaa5-bdcd-4409-8d56-a5b2f5308282",
+                "budgetBps": 3800000,
+                "budgetSource": "trajectory",
+                "bweBps": 350000,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 2,
+                    "layerCostBps": 1630506,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1630506,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1630506
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 2,
+                    "layerCostBps": 1610884,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 3552542,
+                "requestedSpatialLayer": 2,
+                "layerCostBps": 3552542,
+                "layerVideoBps": 3241390,
+                "costSource": "measured",
+                "score": 0.985,
+                "reason": "budget-fits"
+              },
+              {
+                "peerId": "stu-high",
+                "transportId": "0ed1e7ce-48a8-4cec-9151-59b152b3aecd",
+                "budgetBps": 3800000,
+                "budgetSource": "trajectory",
+                "bweBps": 385761,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 2,
+                    "layerCostBps": 1646896,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1646896,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1646896
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 2,
+                    "layerCostBps": 1610884,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 3570243,
+                "requestedSpatialLayer": 2,
+                "layerCostBps": 3570243,
+                "layerVideoBps": 3257780,
+                "costSource": "measured",
+                "score": 0.985,
+                "reason": "budget-fits"
+              }
+            ],
+            "warnings": [
+              {
+                "peerId": "stu-low",
+                "code": "bwe-below-budget",
+                "message": "当前 BWE 350k 低于轨迹预算 3800k，计划层可能被 worker 压制到更低层"
+              },
+              {
+                "peerId": "stu-high",
+                "code": "bwe-below-budget",
+                "message": "当前 BWE 386k 低于轨迹预算 3800k，计划层可能被 worker 压制到更低层"
+              }
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "stu-low": {
+          "slots": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "layers": [
+            0,
+            0,
+            1,
+            2
+          ],
+          "capBps": [
+            399324,
+            399324,
+            1218247,
+            3552542
+          ],
+          "scoreAvg": 0.377,
+          "costSources": [
+            "measured"
+          ],
+          "layerChanges": 2
+        },
+        "stu-high": {
+          "slots": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "layers": [
+            0,
+            1,
+            1,
+            2
+          ],
+          "capBps": [
+            399324,
+            1218247,
+            1218247,
+            3570243
+          ],
+          "scoreAvg": 0.434,
+          "costSources": [
+            "measured"
+          ],
+          "layerChanges": 2
+        }
+      }
+    },
+    "group-shared": {
+      "scheme": "group-shared",
+      "audioReserveBps": 48000,
+      "transportOverhead": 0.08,
+      "slots": [
+        {
+          "t": 0,
+          "budgets": {
+            "stu-low": 400000,
+            "stu-high": 400000
+          },
+          "plan": {
+            "scheme": "group-shared",
+            "at": 1794827683946,
+            "audioReserveBps": 48000,
+            "transportOverhead": 0.08,
+            "groupBudgetBps": 800000,
+            "bottleneckBudgetBps": 400000,
+            "commonSpatialLayer": 0,
+            "commonLayerCostBps": 399324,
+            "receivers": [
+              {
+                "peerId": "stu-low",
+                "transportId": "b43dfaa5-bdcd-4409-8d56-a5b2f5308282",
+                "budgetBps": 400000,
+                "budgetSource": "trajectory",
+                "bweBps": 350000,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 163373,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1630506,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1630506
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 158371,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 399324,
+                "requestedSpatialLayer": 0,
+                "layerCostBps": 399324,
+                "layerVideoBps": 321744,
+                "costSource": "measured",
+                "score": 0.098,
+                "reason": "common-layer-fits"
+              },
+              {
+                "peerId": "stu-high",
+                "transportId": "0ed1e7ce-48a8-4cec-9151-59b152b3aecd",
+                "budgetBps": 400000,
+                "budgetSource": "trajectory",
+                "bweBps": 385761,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 163373,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1646896,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1646896
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 158371,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 399324,
+                "requestedSpatialLayer": 0,
+                "layerCostBps": 399324,
+                "layerVideoBps": 321744,
+                "costSource": "measured",
+                "score": 0.097,
+                "reason": "common-layer-fits"
+              }
+            ],
+            "warnings": [
+              {
+                "peerId": "stu-low",
+                "code": "bwe-below-budget",
+                "message": "接收者 stu-low 当前 BWE 350k 低于轨迹预算 400k，实际层可能被 worker 压低"
+              },
+              {
+                "peerId": "stu-high",
+                "code": "bwe-below-budget",
+                "message": "接收者 stu-high 当前 BWE 386k 低于轨迹预算 400k，实际层可能被 worker 压低"
+              }
+            ]
+          }
+        },
+        {
+          "t": 1,
+          "budgets": {
+            "stu-low": 400000,
+            "stu-high": 1400000
+          },
+          "plan": {
+            "scheme": "group-shared",
+            "at": 1794827683946,
+            "audioReserveBps": 48000,
+            "transportOverhead": 0.08,
+            "groupBudgetBps": 1800000,
+            "bottleneckBudgetBps": 400000,
+            "commonSpatialLayer": 0,
+            "commonLayerCostBps": 399324,
+            "receivers": [
+              {
+                "peerId": "stu-low",
+                "transportId": "b43dfaa5-bdcd-4409-8d56-a5b2f5308282",
+                "budgetBps": 400000,
+                "budgetSource": "trajectory",
+                "bweBps": 350000,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 163373,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1630506,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1630506
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 158371,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 399324,
+                "requestedSpatialLayer": 0,
+                "layerCostBps": 399324,
+                "layerVideoBps": 321744,
+                "costSource": "measured",
+                "score": 0.098,
+                "reason": "common-layer-fits"
+              },
+              {
+                "peerId": "stu-high",
+                "transportId": "0ed1e7ce-48a8-4cec-9151-59b152b3aecd",
+                "budgetBps": 1400000,
+                "budgetSource": "trajectory",
+                "bweBps": 385761,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 163373,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1646896,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1646896
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 0,
+                    "layerCostBps": 158371,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 399324,
+                "requestedSpatialLayer": 0,
+                "layerCostBps": 399324,
+                "layerVideoBps": 321744,
+                "costSource": "measured",
+                "score": 0.097,
+                "reason": "common-layer-fits"
+              }
+            ],
+            "warnings": [
+              {
+                "peerId": "stu-low",
+                "code": "bwe-below-budget",
+                "message": "接收者 stu-low 当前 BWE 350k 低于轨迹预算 400k，实际层可能被 worker 压低"
+              },
+              {
+                "peerId": "stu-high",
+                "code": "bwe-below-budget",
+                "message": "接收者 stu-high 当前 BWE 386k 低于轨迹预算 1400k，实际层可能被 worker 压低"
+              }
+            ]
+          }
+        },
+        {
+          "t": 2,
+          "budgets": {
+            "stu-low": 1350000,
+            "stu-high": 1500000
+          },
+          "plan": {
+            "scheme": "group-shared",
+            "at": 1794827683946,
+            "audioReserveBps": 48000,
+            "transportOverhead": 0.08,
+            "groupBudgetBps": 2850000,
+            "bottleneckBudgetBps": 1350000,
+            "commonSpatialLayer": 1,
+            "commonLayerCostBps": 1218247,
+            "receivers": [
+              {
+                "peerId": "stu-low",
+                "transportId": "b43dfaa5-bdcd-4409-8d56-a5b2f5308282",
+                "budgetBps": 1350000,
+                "budgetSource": "trajectory",
+                "bweBps": 350000,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 547446,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1630506,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1630506
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 532560,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 1218247,
+                "requestedSpatialLayer": 1,
+                "layerCostBps": 1218247,
+                "layerVideoBps": 1080006,
+                "costSource": "measured",
+                "score": 0.328,
+                "reason": "common-layer-fits"
+              },
+              {
+                "peerId": "stu-high",
+                "transportId": "0ed1e7ce-48a8-4cec-9151-59b152b3aecd",
+                "budgetBps": 1500000,
+                "budgetSource": "trajectory",
+                "bweBps": 385761,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 547446,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1646896,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1646896
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 1,
+                    "layerCostBps": 532560,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 1218247,
+                "requestedSpatialLayer": 1,
+                "layerCostBps": 1218247,
+                "layerVideoBps": 1080006,
+                "costSource": "measured",
+                "score": 0.327,
+                "reason": "common-layer-fits"
+              }
+            ],
+            "warnings": [
+              {
+                "peerId": "stu-low",
+                "code": "bwe-below-budget",
+                "message": "接收者 stu-low 当前 BWE 350k 低于轨迹预算 1350k，实际层可能被 worker 压低"
+              },
+              {
+                "peerId": "stu-high",
+                "code": "bwe-below-budget",
+                "message": "接收者 stu-high 当前 BWE 386k 低于轨迹预算 1500k，实际层可能被 worker 压低"
+              }
+            ]
+          }
+        },
+        {
+          "t": 3,
+          "budgets": {
+            "stu-low": 3800000,
+            "stu-high": 3800000
+          },
+          "plan": {
+            "scheme": "group-shared",
+            "at": 1794827683946,
+            "audioReserveBps": 48000,
+            "transportOverhead": 0.08,
+            "groupBudgetBps": 7600000,
+            "bottleneckBudgetBps": 3800000,
+            "commonSpatialLayer": 2,
+            "commonLayerCostBps": 3570243,
+            "receivers": [
+              {
+                "peerId": "stu-low",
+                "transportId": "b43dfaa5-bdcd-4409-8d56-a5b2f5308282",
+                "budgetBps": 3800000,
+                "budgetSource": "trajectory",
+                "bweBps": 350000,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "b045cd9f-319c-4f95-82a4-dac3ebea1b42",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 2,
+                    "layerCostBps": 1630506,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1630506,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1630506
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7cffcde3-f168-48d8-bc9c-a5856856b575",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 2,
+                    "layerCostBps": 1610884,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 3552542,
+                "requestedSpatialLayer": 2,
+                "layerCostBps": 3552542,
+                "layerVideoBps": 3241390,
+                "costSource": "measured",
+                "score": 0.985,
+                "reason": "common-layer-fits"
+              },
+              {
+                "peerId": "stu-high",
+                "transportId": "0ed1e7ce-48a8-4cec-9151-59b152b3aecd",
+                "budgetBps": 3800000,
+                "budgetSource": "trajectory",
+                "bweBps": 385761,
+                "scheduledStreams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera"
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench"
+                  }
+                ],
+                "unscheduledStreams": [],
+                "streams": [
+                  {
+                    "consumerId": "577cb6d4-5ba1-46ea-a16b-1b0792969892",
+                    "producerId": "c2b4f4b9-5d7c-4de6-ba1b-bb3737919b14",
+                    "label": "camera",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 163373,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 2,
+                    "layerCostBps": 1646896,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 163373,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 163373
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 547446,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 547446
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1646896,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1646896
+                      }
+                    ]
+                  },
+                  {
+                    "consumerId": "7ce6f182-8280-45d7-86ad-cb6b43a2675b",
+                    "producerId": "a4d6284b-4bef-4ae7-b9b3-d3b09d0fc6a5",
+                    "label": "bench",
+                    "scheduled": true,
+                    "currentLayer": null,
+                    "currentCostBps": 158371,
+                    "currentCostSource": "measured",
+                    "requestedSpatialLayer": 2,
+                    "layerCostBps": 1610884,
+                    "costSource": "measured",
+                    "costs": [
+                      {
+                        "spatialLayer": 0,
+                        "bps": 158371,
+                        "source": "measured",
+                        "configuredBps": 150000,
+                        "measuredBps": 158371
+                      },
+                      {
+                        "spatialLayer": 1,
+                        "bps": 532560,
+                        "source": "measured",
+                        "configuredBps": 500000,
+                        "measuredBps": 532560
+                      },
+                      {
+                        "spatialLayer": 2,
+                        "bps": 1610884,
+                        "source": "measured",
+                        "configuredBps": 1500000,
+                        "measuredBps": 1610884
+                      }
+                    ]
+                  }
+                ],
+                "capBps": 3570243,
+                "requestedSpatialLayer": 2,
+                "layerCostBps": 3570243,
+                "layerVideoBps": 3257780,
+                "costSource": "measured",
+                "score": 0.985,
+                "reason": "common-layer-fits"
+              }
+            ],
+            "warnings": [
+              {
+                "peerId": "stu-low",
+                "code": "bwe-below-budget",
+                "message": "接收者 stu-low 当前 BWE 350k 低于轨迹预算 3800k，实际层可能被 worker 压低"
+              },
+              {
+                "peerId": "stu-high",
+                "code": "bwe-below-budget",
+                "message": "接收者 stu-high 当前 BWE 386k 低于轨迹预算 3800k，实际层可能被 worker 压低"
+              }
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "stu-low": {
+          "slots": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "layers": [
+            0,
+            0,
+            1,
+            2
+          ],
+          "capBps": [
+            399324,
+            399324,
+            1218247,
+            3552542
+          ],
+          "scoreAvg": 0.377,
+          "costSources": [
+            "measured"
+          ],
+          "layerChanges": 2
+        },
+        "stu-high": {
+          "slots": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "layers": [
+            0,
+            0,
+            1,
+            2
+          ],
+          "capBps": [
+            399324,
+            399324,
+            1218247,
+            3570243
+          ],
+          "scoreAvg": 0.377,
+          "costSources": [
+            "measured"
+          ],
+          "layerChanges": 2
+        }
+      }
+    }
+  },
+  "missingCosts": []
+}

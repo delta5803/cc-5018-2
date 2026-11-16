@@ -81,6 +81,11 @@ ANNOUNCED_IP=192.168.1.10 RTC_MIN_PORT=40000 RTC_MAX_PORT=40100 npm start
    “首次出画 xx ms”、SFU 实际下发层、浏览器/服务端两套真实统计。
 3. 打开**流媒体控制页** → 点「连接转发内核」→ 选目标学生和 Consumer，
    切层 / 限带宽 / 重启 ICE；「操作结果区」回显每次内核调用的成败，下方表格显示真实转发层与码率。
+4. 仍在**流媒体控制页** → 滚到「教学转发调度原型（接到真实包转发入口）」卡片，
+   勾选学生、填每人预算、选方案 →「下发调度方案到转发入口」；
+   下方「分层播放 / 转发对照」表实时显示计划层 / SFU 实际层 / 发送预算上限 / 浏览器可解码帧。
+   **这是教学转发的图形入口**（`http://localhost:3000/control.html` 上的「教学转发调度原型」卡片），
+   命令行脚本只作为复算与回归的辅助手段。
 
 ---
 
@@ -124,6 +129,8 @@ Playwright/Chromium 启动参数（已内置在 `tests/helpers.cjs`）：
 # 先确保服务已启动（npm start），再：
 export LD_LIBRARY_PATH=<本机 chromium 依赖库路径>  # 仅在无 root 装库时需要，见下文“无 root 环境”
 npm test            # = test:auto（6 场景 17 断言）+ test:control（控制页 7 断言）
+npm run test:scheduling   # 两个调度原型专项（13 断言）
+npm run test:trajectory   # 同一带宽轨迹下的真实可切换层对照（8 断言）
 ```
 
 `tests/run-tests.cjs` 覆盖六场景，输出到 `tests/reports/e2e-*.json`：
@@ -146,6 +153,100 @@ npm test            # = test:auto（6 场景 17 断言）+ test:control（控制
 页面统计全部来自真实数据源：浏览器 `RTCRtpReceiver.getStats()` 与服务端
 `transport/consumer/producer.getStats()`，每秒刷新，无固定演示数值。
 
+---
+
+## 5.1 分层策略试验（两个调度原型）
+
+两个原型都接到**真实包转发入口**，不是只改前端质量标签：
+`Consumer.setPreferredLayers({spatialLayer})` 决定 worker 实际转发的空间层，
+`WebRtcTransport.setMaxOutgoingBitrate(bps)` 决定该接收 Transport 的出向预算。
+
+### 预算口径（先讲清楚，否则实验会算错）
+`setMaxOutgoingBitrate` 限制的是**整条接收 Transport**，而一个学生通常在同一条
+Transport 上同时订阅 `camera` + `bench` + 音频。因此：
+
+- 选层用「该接收者**全部视频**在该层的成本之和 + 音频预留」与预算比较；
+- 计划里的 `capBps` 就是这条 Transport 的上限，不再是单路视频的上限；
+- 若只调某一路（控制页「只调某一路轨道」留空则调全部），未调度的视频会被**钉在采集时的当前层**，
+  否则它会继续自动选层向上扩张，挤掉被调度视频的预算——这是曾经的错误来源之一。
+
+### 两个方案
+| | 按接收者独立评分 `per-receiver` | 按共同层组分配预算 `group-shared` |
+|---|---|---|
+| 选层依据 | 各自预算独立选层 | 全组取“每人都放得下”的最高公共层，由最弱链路决定 |
+| 多人分化 | 低带宽只压低自己 | 高带宽成员被拖到与最弱同层 |
+| 发送预算 | 每人各自预算 | 公共层成本，且不超过本人预算 |
+| 代价 | 层不统一，观众观感不一 | 高带宽成员被牺牲，评分可见下降 |
+
+### 可复算数据（可解码帧 + 发送预算）
+- **发送预算**：`WebRtcTransport.getStats().maxOutgoingBitrate`（服务端真实值），
+  计划值在 `control-apply-scheme` 返回的 `scheduling.plan.receivers[].capBps`。
+- **SFU 实际层/出向码率**：`Consumer.getStats()` 的 `currentLayers` 与 `bitrate`。
+- **可解码帧**：学生页每秒上报 `RTCRtpReceiver.getStats()` 的
+  `framesDecoded / framesDropped`，经 `client-stats` 存入 `Peer.clientStats`，
+  控制页表格显示为「解码 N 帧 / 丢 M」。
+- **层成本来源**：`measured`（producer 实测）/ `configured`（发送端声明，属待验假设）/ `missing`（**不按 0 处理**）。
+
+复算命令（不需要浏览器，读离线证据）：
+```bash
+node scripts/layer-policy-experiment.mjs \
+  --evidence experiments/layer-policy/evidence.json \
+  --trajectory experiments/layer-policy/trajectory.json \
+  --out experiments/layer-policy/report.json
+# npm run experiment:layers 等价
+```
+证据来自控制页「导出本房间调度证据 JSON」或 `tests/scheduling.cjs` 落盘的同结构 JSON。
+
+### 同一带宽轨迹下的实测结论
+轨迹（`experiments/layer-policy/trajectory.json`，单位 bps）覆盖 S0→S1→S2：
+`t0 400k/400k → t1 400k/1.4M → t2 1.35M/1.5M → t3 3.8M/3.8M`。
+用同一条接收 Transport 实测层成本（camera+bench 合计）约
+S0≈321k、S1≈1.13M、S2≈3.40M；加上 48k 音频预留与 8% 出向开销后，
+cap 约为 399k / 1.22M / 3.55M（`report.json` 中逐槽可见）。
+
+`per-receiver`（`experiments/layer-policy/report.json` 的 summary）：
+```
+stu-low  layers [0,0,1,2]  capBps [399324,399324,1218247,3552542]
+stu-high layers [0,1,1,2]  capBps [399324,1218247,1218247,3570243]
+```
+`group-shared`：
+```
+stu-low  layers [0,0,1,2]  capBps [399324,399324,1218247,3552542]
+stu-high layers [0,0,1,2]  capBps [399324,399324,1218247,3570243]
+```
+取舍在 `t1` 最明显：独立评分让高带宽成员到 **S1**，共同层组把它拉到 **S0**（与最弱同层）。
+两条曲线在 `t3` 汇合到 S2，说明：带宽充足时两方案无差别，**差异只在多人分化时出现**。
+`scoreAvg` 也印证取舍：独立评分下高成员 0.434、共同层组下被拉到 0.377（与低成员相同）。
+
+### 切换时机（层依赖的真实限制）
+- `setPreferredLayers` 是**上限而非硬切**：worker 要等下一个关键帧，并对 BWE 重新收敛；
+- BWE 的 AIMD 每秒只向上探测约 8%（`AimdRateControl.cpp`），从 400k 爬到 3.5M 需要十几秒；
+- `setMaxOutgoingBitrate` 限制的是 SRTP/UDP/IP **出向总量**，层成本却来自 RTP 载荷统计；
+  cap 恰好等于层成本时 worker 会认为“挤不下”而停在低一层，因此规划时显式加
+  `transportOverhead`（默认 8%，控制页可调），这是可审计参数而非隐藏默认；
+- 实测收敛耗时（`tests/evidence/trace-observed-latest.json`）：
+  S0→S1 约 4–16s，S1→S2 约 4–6s（同轨迹两方案均在窗口内落地）。
+
+### 编码层不可独立解码时的限制（讨论）
+- VP8 Simulcast 的三层是**三条独立 RTP 流**，worker 可只转发低层；但低层分辨率/画质低，
+  不能“只发 S2 的增强部分再靠 S0 补齐”——浏览器需要从可解码的关键帧起完整解码，
+  因此**高层依赖低层参考帧**时，把 S0 抽掉会让上层也无法独立解码，只能整体降级。
+- VP9 SVC 同样是单流内分层，`setPreferredLayers` 只能在编码器产出的可解码层组合内切换。
+- 本项目的实验只调度**可独立解码的空间层**；不做“丢弃低层保留高层”的伪优化。
+
+### 单列待验（尚未验证的假设，不是已实现结论）
+1. **音频预留 48kbps** 是本仓库的调度参数，不是从实际 Opus 码率测量得出的；
+2. **传输开销 8%** 是经验值（覆盖 SRTP/UDP/IP 头与少量重传），不是逐包测量得到的；
+3. **配置成本回退**（`source: configured`，取发送端 `encodings.maxBitrate`）在无实测时参与选层，
+   该值只是发送端声明，未必等于真实转发成本；
+4. **共同层组的成员边界**：默认按控制页勾选的学生成组，未考虑跨机房/跨网络路径差异；
+5. **`preferredLayers` 是天花板不是强制值**：worker 仍可能因 BWE/关键帧不足停在更低层；
+6. **同层播放不等于同观感**：不同学生设备解码能力/渲染尺寸未建模；
+7. **BWE 向上探测时间**在本环境约几秒到十几秒，跨公网/高 RTT 下的具体时间未测；
+8. **层成本随画面内容波动**：本次证据在测试画布下测得，真实课程画面的层成本比例可能不同。
+
+---
+
 ### 无 root 环境运行 Chromium（本环境的做法）
 系统缺少 `libnss3/libnspr4/...` 且不能 apt 安装时，下载 bookworm arm64 的 `.deb`
 解压到用户目录，用 `LD_LIBRARY_PATH` 注入（不写系统目录）：
@@ -162,15 +263,22 @@ npx playwright install chromium
 server/
   config.js             媒体编解码/分层声明、端口、Transport 参数
   mediasoup-workers.js  Worker 池（RTP 路由子进程）
+  scheduler.js          两个调度原型（纯计算）：按接收者独立评分 / 按共同层组分配预算
   room.js               Room/Peer 生命周期：Transport/Producer/Consumer、
-                        选层、带宽上限、ICE 重启、退出清理、真实统计
+                        选层、带宽上限、ICE 重启、退出清理、真实统计、
+                        以及调度原型的生产接点 applySchedulingScheme()
   index.js              HTTP + WebSocket 信令，请求/事件编排
 public/
   teacher/student/control.html + js/   三个页面
   js/test-media.js      动态画布/正弦音测试媒体、Simulcast/SVC 编码参数
   vendor/               打包后的 mediasoup-client
-scripts/network-limit.sh  OS 级 tc 限速
+scripts/
+  network-limit.sh      OS 级 tc 限速
+  layer-policy-experiment.mjs  用离线证据 + 带宽轨迹复算两个方案
+experiments/layer-policy/    evidence.json（真实层成本）/ trajectory.json / report.json
 tests/                  Playwright 多实例端到端、内核探针、控制页测试与 JSON 报告
+  scheduling.cjs        调度原型专项（真实包转发入口）
+  trajectory.cjs        同一带宽轨迹下的真实切层时机
 ```
 
 ## 7. 信令方法一览（WebSocket JSON，请求带数字 id，响应回同 id）

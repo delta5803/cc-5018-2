@@ -80,6 +80,7 @@ class CoreProbe {
       transportOpen: Boolean(recv),
       iceState: recv?.iceState || null,
       maxOutgoingBitrate: recv?.maxOutgoingBitrate ?? null,
+      availableOutgoingBitrate: recv?.availableOutgoingBitrate ?? null,
       bytesSent: recv?.bytesSent || 0,
       consumerCount: st.consumers.length,
     };

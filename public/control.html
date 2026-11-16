@@ -72,6 +72,54 @@
   </div>
 
   <div class="card" style="margin-top:16px">
+    <h2>教学转发调度原型（接到真实包转发入口）</h2>
+    <p class="muted">
+      这里的“下发”会在服务端真正调用
+      <code>Consumer.setPreferredLayers()</code>（决定 worker 实际转发的空间层）与
+      <code>WebRtcTransport.setMaxOutgoingBitrate()</code>（决定出向发送预算），
+      不是改页面 video 尺寸或质量标签。层成本来自 mediasoup
+      <code>producer.getStats()</code> 的实测入向码率（VP8 Simulcast 按 rid 映射
+      到空间层，SVC 才用 <code>bitrateByLayer</code>）；缺失时回退配置值并标注。
+    </p>
+    <div class="grid grid-2" style="margin-top:10px">
+      <div>
+        <label>调度方案</label>
+        <select id="schemeSelect">
+          <option value="per-receiver">按接收者独立评分</option>
+          <option value="group-shared">按共同层组分配预算</option>
+        </select>
+        <label>音频预留（kbps）</label>
+        <input id="audioReserve" type="number" value="48" style="width:90px" />
+        <label>出向传输开销（%，含 SRTP/UDP 头与重传）</label>
+        <input id="transportOverhead" type="number" value="8" style="width:90px" />
+        <label>只调某一路轨道（留空=全部视频）</label>
+        <input id="schemeLabel" placeholder="如 camera / bench" style="width:130px" />
+        <div style="margin-top:10px">
+          <b style="font-size:13px">共同层组成员（勾选即纳入组）</b>
+          <div id="groupMembers" class="muted" style="margin-top:4px">暂无学生</div>
+        </div>
+        <div style="margin-top:10px">
+          <b style="font-size:13px">各接收者轨迹预算（kbps，留空=未设置，不按 0 处理）</b>
+          <div id="budgetInputs" class="muted" style="margin-top:4px">暂无学生</div>
+        </div>
+        <div style="margin-top:12px">
+          <button id="applySchemeBtn">下发调度方案到转发入口</button>
+          <button id="clearSchemeBtn" class="secondary">恢复所选学生自动选层</button>
+          <button id="exportEvidenceBtn" class="secondary">导出本房间调度证据 JSON</button>
+        </div>
+      </div>
+      <div>
+        <h2>调度计划（服务端规划结果，实际下发项 + 失败项）</h2>
+        <div id="schemePlan" class="muted">尚未下发方案</div>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <h2>分层播放 / 转发对照（实际层 · 发送预算 · 可解码帧）</h2>
+      <div id="schemeEvidence" class="muted">等待内核证据</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
     <h2>实时转发明细（实际层 / 码率 / 丢包反馈 / 带宽上限）</h2>
     <div id="detailArea"></div>
   </div>

@@ -1,5 +1,6 @@
 import { CONFIG } from './config.js';
 import { pickWorker } from './mediasoup-workers.js';
+import { planScheme, DEFAULT_AUDIO_RESERVE_BPS, DEFAULT_TRANSPORT_OVERHEAD } from './scheduler.js';
 
 let roomSeq = 0;
 
@@ -14,6 +15,17 @@ export class Room {
     this.router = null;
     this.peers = new Map(); // peerId -> Peer
     this.seq = ++roomSeq;
+    // 调度原型状态：最近一次实际下发到转发入口的决策与依据
+    this.scheduling = {
+      scheme: null,
+      appliedAt: null,
+      audioReserveBps: null,
+      groupPeerIds: [],
+      receiverBudgets: {},
+      plan: null,
+      applied: [],
+      errors: [],
+    };
   }
 
   static async create(id) {
@@ -63,8 +75,324 @@ export class Room {
     return {
       roomId: this.id,
       routerClosed: this.router.closed,
+      scheduling: this.scheduling,
       peers: [...this.peers.values()].map((p) => p.snapshot()),
     };
+  }
+
+  /**
+   * 收集一个学生的全部视频订阅成本，按“接收者”聚合。
+   *
+   * VP8 Simulcast 的关键事实：三层是三个独立的 RTP 流（各带 rid），
+   * producer.getStats() 会返回多条 inbound-rtp，每条对应一个空间层；
+   * 单条内部的 bitrateByLayer 是时间层成本，不是空间层。
+   * 因此必须按 rid / encoding 下标映射空间层，不能只取第一条统计。
+   *
+   * SVC（VP9 L3T3）则是单流内多空间层，此时用 bitrateByLayer 的 "s.t" 键。
+   *
+   * 成本来源：实测优先（source=measured），否则退回 encodings.maxBitrate
+   * （source=configured，属待验假设），都没有则 missing，绝不按 0 参与选层。
+   *
+   * 关键：setMaxOutgoingBitrate 限制整条接收 Transport，所以这里把一个学生的
+   * 所有视频订阅都收进来，用 scheduled 标记哪些是本轮要改层的；未调度的视频
+   * 仍占用同一条出向预算，必须按其当前层成本计入，不能当它不存在。
+   */
+  async collectReceiverCosts(peer, label) {
+    const streams = [];
+    const producerStatsCache = new Map();
+    for (const consumer of peer.consumers.values()) {
+      if (consumer.kind !== 'video') continue;
+      const consumerLabel = consumer.appData?.label || '';
+      const found = this.findProducer(consumer.producerId);
+      if (!found) continue;
+      const producer = found.producer;
+      let stats = producerStatsCache.get(producer.id);
+      if (!stats) {
+        stats = (await producer.getStats()).filter((s) => s.type === 'inbound-rtp');
+        producerStatsCache.set(producer.id, stats);
+      }
+      const encodings = producer.rtpParameters?.encodings || [];
+      const ridToIndex = new Map();
+      encodings.forEach((enc, idx) => { if (enc.rid) ridToIndex.set(enc.rid, idx); });
+
+      // 空间层成本表：下标 = 空间层
+      const measured = new Map();
+      let svcLayerMap = null;
+      for (const s of stats) {
+        const streamSpatial = Number.isFinite(ridToIndex.get(s.rid)) ? ridToIndex.get(s.rid) : (stats.length === 1 ? 0 : null);
+        if (streamSpatial != null) {
+          // Simulcast：整条流的 bitrate 就是该空间层的实测成本
+          const prev = measured.get(streamSpatial);
+          if (prev == null || (s.bitrate || 0) > prev) measured.set(streamSpatial, s.bitrate || null);
+        }
+        // SVC：单流内 bitrateByLayer 键为 "spatial.temporal"
+        const byLayer = s.bitrateByLayer || {};
+        if (Object.keys(byLayer).length) {
+          if (!svcLayerMap) svcLayerMap = new Map();
+          for (const [key, bps] of Object.entries(byLayer)) {
+            const [sp] = key.split('.').map(Number);
+            if (!Number.isFinite(sp) || !Number.isFinite(bps) || bps <= 0) continue;
+            const prev = svcLayerMap.get(sp);
+            if (prev == null || bps > prev) svcLayerMap.set(sp, bps);
+          }
+        }
+      }
+
+      const layerIndices = new Set([...measured.keys(), ...(svcLayerMap ? svcLayerMap.keys() : [])]);
+      encodings.forEach((_, idx) => layerIndices.add(idx));
+      const layerCount = layerIndices.size ? Math.max(...layerIndices) + 1 : 1;
+      const costs = [];
+      for (let s = 0; s < layerCount; s++) {
+        const configuredBps = encodings[s]?.maxBitrate ?? null;
+        const measuredBps = measured.get(s) ?? svcLayerMap?.get(s) ?? null;
+        const bps = measuredBps ?? configuredBps ?? null;
+        costs.push({
+          spatialLayer: s,
+          bps,
+          source: measuredBps != null ? 'measured' : configuredBps != null ? 'configured' : 'missing',
+          measuredBps,
+          configuredBps,
+        });
+      }
+      const currentLayer = peer.consumerLayers.get(consumer.id)?.spatialLayer ?? null;
+      const currentCost = currentLayer == null ? null : costs.find((c) => c.spatialLayer === currentLayer);
+      streams.push({
+        consumerId: consumer.id,
+        producerId: producer.id,
+        label: consumerLabel,
+        // 未指定 label 表示调度全部视频；指定了则只调度匹配的那一路，
+        // 其余视频仍占同一接收 Transport 的出向预算。
+        scheduled: !label || consumerLabel === label,
+        costs,
+        currentLayer,
+        currentCostBps: currentCost?.bps ?? null,
+        currentCostSource: currentCost?.source ?? 'missing',
+      });
+    }
+    return streams;
+  }
+
+  /**
+   * 教学转发原型真正的生产接点：
+   *   1) 每个接收者轨迹预算 + 该接收 Transport 的 BWE 实测；
+   *   2) 按方案计算逐 Consumer 的目标空间层与出向预算；
+   *   3) 调 Consumer.setPreferredLayers() 与 WebRtcTransport.setMaxOutgoingBitrate()。
+   * 任何一步失败都逐条记入 errors 返回给控制页，不用默认值掩盖。
+   */
+  async applySchedulingScheme({
+    scheme,
+    groupPeerIds = [],
+    receiverBudgets = {},
+    audioReserveBps = DEFAULT_AUDIO_RESERVE_BPS,
+    transportOverhead = DEFAULT_TRANSPORT_OVERHEAD,
+    label = null,
+  }) {
+    if (!['per-receiver', 'group-shared'].includes(scheme)) {
+      throw new Error(`未知调度方案 ${scheme}`);
+    }
+    const peers = groupPeerIds.map((id) => this.peers.get(id)).filter(Boolean);
+    if (!peers.length) throw new Error('共同层组为空：请选择至少一个在线学生');
+
+    // 读取每个接收者 Transport 的 BWE（真实网络估计）
+    const bweByTransport = new Map();
+    for (const peer of peers) {
+      for (const transport of peer.transports.values()) {
+        if (transport.appData?.direction !== 'recv') continue;
+        try {
+          const stats = await transport.getStats();
+          const tuple = stats.find((s) => s.type === 'webrtc-transport');
+          bweByTransport.set(transport.id, {
+            availableOutgoingBitrate: tuple?.availableOutgoingBitrate ?? null,
+            maxOutgoingBitrate: tuple?.maxOutgoingBitrate ?? null,
+          });
+        } catch (err) {
+          bweByTransport.set(transport.id, { error: err.message });
+        }
+      }
+    }
+
+    const receivers = [];
+    for (const peer of peers) {
+      const streams = await this.collectReceiverCosts(peer, label);
+      if (!streams.some((s) => s.scheduled)) continue;
+      // 接收者级：预算跟人走，选层按该接收 Transport 上全部视频合计
+      const budgetBps = Number(receiverBudgets[peer.id] ?? NaN);
+      const recvTransportId = streams
+        .map((s) => peer.consumerTransports.get(s.consumerId))
+        .find(Boolean) ?? null;
+      const bwe = bweByTransport.get(recvTransportId);
+      receivers.push({
+        peerId: peer.id,
+        transportId: recvTransportId,
+        streams,
+        budgetBps: Number.isFinite(budgetBps) ? budgetBps : null,
+        budgetSource: Number.isFinite(budgetBps) ? 'input' : 'unset',
+        bweBps: Number.isFinite(bwe?.availableOutgoingBitrate) ? bwe.availableOutgoingBitrate : null,
+      });
+    }
+    if (!receivers.length) throw new Error('所选学生没有可调度的视频订阅');
+
+    const plan = planScheme(scheme, receivers, { audioReserveBps, transportOverhead });
+
+    const applied = [];
+    const errors = [];
+    const requested = new Map();
+    for (const d of plan.receivers) {
+      if (d.requestedSpatialLayer == null) {
+        errors.push({ peerId: d.peerId, stage: 'plan', message: `未选层：${d.reason}` });
+        continue;
+      }
+      for (const s of d.streams) {
+        if (!s.scheduled) continue;
+        if (s.requestedSpatialLayer == null) {
+          errors.push({ peerId: d.peerId, consumerId: s.consumerId, stage: 'plan', message: `未选层：${d.reason}` });
+          continue;
+        }
+        const found = this.findConsumer(s.consumerId);
+        if (!found) {
+          errors.push({ peerId: d.peerId, consumerId: s.consumerId, stage: 'plan', message: 'Consumer 已不存在' });
+          continue;
+        }
+        requested.set(s.consumerId, { decision: d, stream: s, found });
+      }
+    }
+
+    // 先设层，再设预算（预算极限会把层压低，这里保留 worker 的合法压制）
+    for (const [consumerId, { decision, stream, found }] of requested) {
+      try {
+        await found.consumer.setPreferredLayers({ spatialLayer: stream.requestedSpatialLayer });
+        found.peer.manualLayers.set(consumerId, { spatialLayer: stream.requestedSpatialLayer });
+        found.consumer.requestKeyFrame().catch(() => {});
+        applied.push({
+          peerId: decision.peerId,
+          consumerId,
+          label: stream.label,
+          transportId: decision.transportId,
+          action: 'setPreferredLayers',
+          spatialLayer: stream.requestedSpatialLayer,
+        });
+      } catch (err) {
+        errors.push({ consumerId, peerId: decision.peerId, stage: 'setPreferredLayers', message: err.message });
+      }
+    }
+
+    // 未调度的视频仍在同一条接收 Transport 上，且预算核算已按它“当前层”成本计入。
+    // 若不钉住，它会继续自动选层并向上扩张，挤掉被调度视频的预算。
+    // 钉在采集时的当前层；采集不到当前层则如实记失败，不能假装成功。
+    for (const d of plan.receivers) {
+      for (const s of d.streams) {
+        if (s.scheduled) continue;
+        const found = this.findConsumer(s.consumerId);
+        if (!found) continue;
+        if (s.currentLayer == null) {
+          errors.push({
+            consumerId: s.consumerId,
+            peerId: d.peerId,
+            stage: 'pin-unscheduled',
+            message: '未调度视频没有当前层，无法钉住，可能挤占预算',
+          });
+          continue;
+        }
+        try {
+          await found.consumer.setPreferredLayers({ spatialLayer: s.currentLayer });
+          found.peer.manualLayers.set(s.consumerId, { spatialLayer: s.currentLayer, pinned: true });
+          applied.push({
+            peerId: d.peerId,
+            consumerId: s.consumerId,
+            label: s.label,
+            transportId: d.transportId,
+            action: 'pin-unscheduled',
+            spatialLayer: s.currentLayer,
+          });
+        } catch (err) {
+          errors.push({ consumerId: s.consumerId, peerId: d.peerId, stage: 'pin-unscheduled', message: err.message });
+        }
+      }
+    }
+
+    // setMaxOutgoingBitrate 是“整条接收 Transport”的共享上限，计划里的 capBps
+    // 已经按该接收者全部视频 + 音频预留合计算好，所以每个 Transport 直接用它。
+    const transportCapsApplied = new Set();
+    for (const d of plan.receivers) {
+      if (!d.transportId || d.capBps == null) continue;
+      if (transportCapsApplied.has(d.transportId)) continue;
+      const peer = this.peers.get(d.peerId);
+      const transport = peer?.transports.get(d.transportId);
+      if (!transport) {
+        errors.push({ peerId: d.peerId, transportId: d.transportId, stage: 'setMaxOutgoingBitrate', message: '接收 Transport 不存在' });
+        continue;
+      }
+      try {
+        await transport.setMaxOutgoingBitrate(d.capBps);
+        peer.bitrateCaps.set(d.transportId, d.capBps);
+        transportCapsApplied.add(d.transportId);
+        applied.push({
+          peerId: d.peerId,
+          transportId: d.transportId,
+          action: 'setMaxOutgoingBitrate',
+          bitrate: d.capBps,
+        });
+      } catch (err) {
+        errors.push({ peerId: d.peerId, transportId: d.transportId, stage: 'setMaxOutgoingBitrate', message: err.message });
+      }
+    }
+
+    this.scheduling = {
+      scheme,
+      appliedAt: Date.now(),
+      audioReserveBps,
+      transportOverhead,
+      groupPeerIds: peers.map((p) => p.id),
+      receiverBudgets,
+      plan,
+      applied,
+      errors,
+    };
+
+    // 通知控制页/学生页：策略已下发（失败也广播，便于界面提示异常）
+    const event = {
+      type: 'scheduling-applied',
+      scheme,
+      appliedAt: this.scheduling.appliedAt,
+      appliedCount: applied.length,
+      errorCount: errors.length,
+      commonSpatialLayer: plan.commonSpatialLayer ?? null,
+      receivers: plan.receivers.map((r) => ({
+        peerId: r.peerId,
+        transportId: r.transportId,
+        requestedSpatialLayer: r.requestedSpatialLayer,
+        capBps: r.capBps,
+        costSource: r.costSource,
+        score: r.score,
+        streams: r.streams.map((s) => ({
+          consumerId: s.consumerId,
+          label: s.label,
+          scheduled: s.scheduled,
+          requestedSpatialLayer: s.requestedSpatialLayer ?? null,
+        })),
+      })),
+      warnings: plan.warnings,
+    };
+    for (const peer of this.peers.values()) peer.send(event);
+    return this.scheduling;
+  }
+
+  // 控制页可对单个接收者恢复自动选层（逐接收者独立评分之外的兜底）
+  async clearSchedulingForPeer(peerId) {
+    const peer = this.peers.get(peerId);
+    if (!peer) throw new Error(`目标节点 ${peerId} 不在线`);
+    const results = [];
+    for (const consumer of peer.consumers.values()) {
+      if (consumer.kind !== 'video') continue;
+      try {
+        await consumer.setPreferredLayers({ spatialLayer: 2 });
+        peer.manualLayers.set(consumer.id, null);
+        results.push({ consumerId: consumer.id, action: 'auto-max-spatial' });
+      } catch (err) {
+        results.push({ consumerId: consumer.id, error: err.message });
+      }
+    }
+    return results;
   }
 
   close() {
@@ -90,6 +418,8 @@ export class Peer {
     this.consumerLayers = new Map(); // consumerId -> 当前实际层（layerschange 上报）
     this.manualLayers = new Map(); // consumerId -> 手动指定层，null 表示自动
     this.bitrateCaps = new Map(); // recvTransportId -> bps 上限
+    this.consumerTransports = new Map(); // consumerId -> recvTransportId
+    this.clientStats = new Map(); // consumerId -> 浏览器实测（可解码帧等），学生页上报
     this.closed = false;
     this.joinedAt = Date.now();
   }
@@ -207,6 +537,7 @@ export class Peer {
       appData: { producerPeerId: found.peer.id, label: producer.appData?.label || '' },
     });
     this.consumers.set(consumer.id, consumer);
+    this.consumerTransports.set(consumer.id, transport.id);
     this.manualLayers.set(consumer.id, null); // 默认自动：由 BWE 决定层级
 
     consumer.on('layerschange', (layers) => {
@@ -234,6 +565,8 @@ export class Peer {
       this.consumers.delete(consumer.id);
       this.consumerLayers.delete(consumer.id);
       this.manualLayers.delete(consumer.id);
+      this.consumerTransports.delete(consumer.id);
+      this.clientStats.delete(consumer.id);
     });
 
     return {
@@ -309,7 +642,8 @@ export class Peer {
     const transports = [];
     for (const t of this.transports.values()) {
       const stats = await t.getStats();
-      const tuple = stats.find((s) => s.type === 'transport') || {};
+      // mediasoup 3.32 WebRtcTransportStat.type 实测为 'webrtc-transport'，不是 'transport'
+      const tuple = stats.find((s) => s.type === 'webrtc-transport') || {};
       transports.push({
         id: t.id,
         direction: t.appData?.direction,
@@ -318,22 +652,27 @@ export class Peer {
         bytesReceived: tuple.bytesReceived || 0,
         bytesSent: tuple.bytesSent || 0,
         recvBitrate: tuple.recvBitrate || 0, // bps，mediasoup 实测
-        sentBitrate: tuple.sentBitrate || 0,
-        maxOutgoingBitrate: this.bitrateCaps.get(t.id) ?? null,
+        sendBitrate: tuple.sendBitrate || 0,
+        rtpSendBitrate: tuple.rtpSendBitrate || 0,
+        availableOutgoingBitrate: tuple.availableOutgoingBitrate ?? null,
+        maxOutgoingBitrate: tuple.maxOutgoingBitrate ?? this.bitrateCaps.get(t.id) ?? null,
       });
     }
     const producers = [];
     for (const p of this.producers.values()) {
       const stats = await p.getStats();
+      // RtpStreamRecvStats 用 byteCount，没有 bytesReceived
       const rtp = stats.find((s) => s.type === 'inbound-rtp') || {};
       producers.push({
         id: p.id,
         kind: p.kind,
         label: p.appData?.label || '',
         mimeType: rtp.mimeType || p.rtpParameters?.codecs?.[0]?.mimeType,
-        bytesReceived: rtp.bytesReceived || 0,
+        bytesReceived: rtp.byteCount || 0,
+        packetCount: rtp.packetCount || 0,
         bitrate: rtp.bitrate || 0,
         jitter: rtp.jitter || 0,
+        bitrateByLayer: rtp.bitrateByLayer || {},
         score: p.score,
         paused: p.paused,
       });
@@ -341,6 +680,7 @@ export class Peer {
     const consumers = [];
     for (const c of this.consumers.values()) {
       const stats = await c.getStats();
+      // RtpStreamSendStats 同样用 byteCount
       const rtp = stats.find((s) => s.type === 'outbound-rtp') || {};
       consumers.push({
         id: c.id,
@@ -348,10 +688,12 @@ export class Peer {
         kind: c.kind,
         label: c.appData?.label || '',
         mimeType: rtp.mimeType || c.rtpParameters?.codecs?.[0]?.mimeType,
-        bytesSent: rtp.bytesSent || 0,
+        bytesSent: rtp.byteCount || 0,
+        packetCount: rtp.packetCount || 0,
         bitrate: rtp.bitrate || 0,
         currentLayers: this.consumerLayers.get(c.id) ?? null,
         manualLayers: this.manualLayers.get(c.id) ?? null,
+        clientStats: this.clientStats.get(c.id) ?? null,
         score: c.score,
         paused: c.paused,
         producerPaused: c.producerPaused,
@@ -391,8 +733,38 @@ export class Peer {
         paused: c.paused,
         currentLayers: this.consumerLayers.get(c.id) ?? null,
         manualLayers: this.manualLayers.get(c.id) ?? null,
+        clientStats: this.clientStats.get(c.id) ?? null,
       })),
     };
+  }
+
+  /**
+   * 学生页回报浏览器端实测（RTCRtpReceiver.getStats）：
+   * 可解码帧数、丢帧、收包、实时码率。控制页据此对照“SFU 实际转发层”与
+   * “浏览器实际解码”，而不是只信服务端出向数值。
+   */
+  reportClientStats(payload = {}) {
+    const updated = [];
+    for (const item of payload.consumers || []) {
+      if (!item || !this.consumers.has(item.consumerId)) continue;
+      const prev = this.clientStats.get(item.consumerId);
+      const record = {
+        consumerId: item.consumerId,
+        kind: item.kind || this.consumers.get(item.consumerId).kind,
+        framesDecoded: Number.isFinite(item.framesDecoded) ? item.framesDecoded : null,
+        framesDropped: Number.isFinite(item.framesDropped) ? item.framesDropped : null,
+        packetsReceived: Number.isFinite(item.packetsReceived) ? item.packetsReceived : null,
+        packetsLost: Number.isFinite(item.packetsLost) ? item.packetsLost : null,
+        bitrateBps: Number.isFinite(item.bitrateBps) ? item.bitrateBps : null,
+        jitter: Number.isFinite(item.jitter) ? item.jitter : null,
+        at: Date.now(),
+      };
+      // 首帧只记第一次，之后保持；避免轮询覆盖掉真实首帧时间
+      record.firstFrameAt = prev?.firstFrameAt ?? (item.firstFrameAt ?? null);
+      this.clientStats.set(item.consumerId, record);
+      updated.push(item.consumerId);
+    }
+    return updated;
   }
 
   // 离开/被替换/教师退出时的完整资源回收
@@ -414,6 +786,8 @@ export class Peer {
     this.consumerLayers.clear();
     this.manualLayers.clear();
     this.bitrateCaps.clear();
+    this.consumerTransports.clear();
+    this.clientStats.clear();
     this.room.peers.delete(this.id);
 
     // 通知其他在线节点：信令层面的离开

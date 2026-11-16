@@ -221,6 +221,7 @@ async function consumeProducer(producerId, label, kind) {
 async function pollStats() {
   if (!joined) return;
   const rows = [];
+  const clientReport = [];
   for (const [cid, meta] of consumerMeta) {
     const s = await getReceiverStats(meta.consumer);
     const now = performance.now();
@@ -244,6 +245,24 @@ async function pollStats() {
       }
     }
     rows.push({ meta, kbps, s });
+    if (s) {
+      clientReport.push({
+        consumerId: meta.consumer.id,
+        kind: meta.kind,
+        framesDecoded: s.framesDecoded ?? null,
+        framesDropped: s.framesDropped ?? null,
+        packetsReceived: s.packetsReceived ?? null,
+        packetsLost: s.packetsLost ?? null,
+        bitrateBps: Math.round(kbps * 1000),
+        jitter: s.jitter ?? null,
+        // 只有真正出画后才上报首帧时间，避免“信令在线”被当成媒体就绪
+        firstFrameAt: meta.firstFrameAt ?? null,
+      });
+    }
+  }
+  if (clientReport.length) {
+    // 上报失败不阻塞本页统计；控制页会显示“无浏览器实测”而不是默认值
+    sig.request('client-stats', { consumers: clientReport }).catch(() => {});
   }
   try {
     const { stats } = await sig.request('get-stats');

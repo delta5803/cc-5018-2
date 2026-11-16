@@ -1,0 +1,11 @@
+{
+  "audioReserveBps": 48000,
+  "transportOverhead": 0.08,
+  "note": "预算口径=接收者整条接收 Transport（camera+bench+音频合计，并按 transportOverhead 加 8% 出向开销）。实测两路合计 S0≈321k、S1≈1.13M、S2≈3.40M；含 48k 音频与 8% 开销后 cap 约 399k / 1.22M / 3.55M。",
+  "slots": [
+    { "t": 0, "budgets": { "stu-low": 400000, "stu-high": 400000 } },
+    { "t": 1, "budgets": { "stu-low": 400000, "stu-high": 1400000 } },
+    { "t": 2, "budgets": { "stu-low": 1350000, "stu-high": 1500000 } },
+    { "t": 3, "budgets": { "stu-low": 3800000, "stu-high": 3800000 } }
+  ]
+}
